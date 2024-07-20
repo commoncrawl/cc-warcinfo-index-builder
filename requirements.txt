@@ -1,0 +1,8 @@
+boto3
+warcio
+pandas
+numpy
+pyarrow
+
+#pandas<2
+#pandas-appender
