@@ -24,8 +24,10 @@ for crawl in sys.argv[1:]:
     key = s3_prefix.format(crawl) + 'warc.paths.gz'
     outname = crawl+'-warcinfo-id.parquet'
     if os.path.isfile(outname):
-        print('skipping', outname, 'because it already exists.')
+        # make this quiet because it's the normal case
+        #print('skipping', outname, 'because it already exists.')
         continue
+    print('processing', outname)
 
     try:
         response = s3.get_object(
@@ -33,8 +35,11 @@ for crawl in sys.argv[1:]:
             Key=key,
         )
     except botocore.exceptions.ClientError as error:
-        print('No such key', s3_bucket, key, repr(error))
-        continue
+        # this is expected for the 3 earliest crawls
+        if repr(error).startswith('NoSuchKey'):
+            print('No warc.paths.gz for', crawl)
+            continue
+        raise
     except KeyboardInterrupt as error:
         print('^C fetching', s3_bucket, key, repr(error))
         continue

@@ -4,5 +4,7 @@ pandas
 numpy
 pyarrow
 
+pytest
+
 #pandas<2
 #pandas-appender
