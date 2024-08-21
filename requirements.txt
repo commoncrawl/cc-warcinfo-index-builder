@@ -3,6 +3,7 @@ warcio
 pandas
 numpy
 pyarrow
+duckdb
 
 pytest
 

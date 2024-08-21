@@ -11,12 +11,14 @@ in 6h 56m.
 
 A copy of the actual index can be found on rf:/home/cc-pds/warcinfo_id.parquet
 
-## How it works
+## How to query
+
+Look at the test code, test_pandas.py and test_duck.py
+
+## Updating the index
 
 The code uses smart_open() to read the initial part of every warc, extracting
 the first record, which should be the warcinfo record.
-
-## Updating the index
 
 The code is smart enough to not re-download anything, and runs in
 parallel for every crawl. It only needs about 3% of a core per
