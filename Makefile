@@ -1,4 +1,4 @@
-.PHONEY: collinfo all-crawls all-workinfo parquet test
+.PHONY: collinfo all-crawls all-warcinfo parquet test
 
 collinfo:
 	wget https://index.commoncrawl.org/collinfo.json
@@ -14,3 +14,6 @@ parquet:
 
 test:
 	python -m pytest .
+
+install:
+	cp warcinfo-id.parquet /home/cc-pds/warcinfo-id.parquet
