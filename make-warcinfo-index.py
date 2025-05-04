@@ -8,6 +8,7 @@ import botocore.exceptions
 import pandas as pd
 from warcio.recordloader import ArcWarcRecordLoader
 from warcio.bufferedreaders import DecompressingBufferedReader
+from tqdm import tqdm
 
 
 #import warnings
@@ -48,7 +49,7 @@ for crawl in sys.argv[1:]:
 
     output = []
 
-    for warc in warcs:
+    for warc in tqdm(warcs):
         try:
             response = s3.get_object(
                 Bucket=s3_bucket,

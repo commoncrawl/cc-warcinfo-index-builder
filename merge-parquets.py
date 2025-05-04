@@ -1,11 +1,11 @@
 import sys
 
 import pandas as pd
-
+from tqdm import tqdm
 
 dfs = []
 
-for file in sys.argv[1:]:
+for file in tqdm(sys.argv[1:]):
     df = pd.read_parquet(file)
     dfs.append(df)
 
