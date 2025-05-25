@@ -20,16 +20,8 @@ s3_prefix = 'crawl-data/{}/'
 
 s3 = boto3.client('s3')
 
-for crawl in sys.argv[1:]:
-    crawl = crawl.rstrip()
-    key = s3_prefix.format(crawl) + 'warc.paths.gz'
-    outname = crawl+'-warcinfo-id.parquet'
-    if os.path.isfile(outname):
-        # make this quiet because it's the normal case
-        #print('skipping', outname, 'because it already exists.')
-        continue
-    print('processing', outname)
 
+def get_paths_from_s3(s3_bucket, key):
     try:
         response = s3.get_object(
             Bucket=s3_bucket,
@@ -39,13 +31,35 @@ for crawl in sys.argv[1:]:
         # this is expected for the 3 earliest crawls
         if repr(error).startswith('NoSuchKey'):
             print('No warc.paths.gz for', crawl)
-            continue
+            return
         raise
     except KeyboardInterrupt as error:
         print('^C fetching', s3_bucket, key, repr(error))
-        continue
+        return
 
     warcs = gzip.decompress(response['Body'].read()).decode('utf8').splitlines()
+    return warcs
+
+
+for crawl in sys.argv[1:]:
+    crawl = crawl.rstrip()
+    key = s3_prefix.format(crawl) + 'warc.paths.gz'
+    localpath = crawl + '-warc.paths.gz'
+    outname = crawl+'-warcinfo-id.parquet'
+    if os.path.isfile(outname):
+        # make this quiet because it's the normal case
+        #print('skipping', outname, 'because it already exists.')
+        continue
+    print('processing', outname)
+
+    # use paths from local disk if it exists
+    if os.path.isfile(localpath):
+        warcs = gzip.open(localpath, mode='rt').readlines()
+        warcs = [w.rstrip() for w in warcs]
+    else:
+        warcs = get_paths_from_s3(s3_bucket, key)
+    if not warcs:
+        continue
 
     output = []
 
