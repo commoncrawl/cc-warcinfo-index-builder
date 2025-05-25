@@ -7,8 +7,8 @@ all-crawls:
 	cat collinfo.json | jq -r '.[].id' > all-crawls
 
 CRAWL=CC-MAIN-2025-21
-make-paths:
-	aws s3 ls --recursive s3://commoncrawl/crawl-data/$(CRAWL) | grep warc | awk '{print $$4}' | gzip > $(CRAWL)-warc.paths.gz
+one-paths:
+	aws s3 ls --recursive s3://commoncrawl/crawl-data/$(CRAWL) | grep /warc/ | awk '{print $$4}' | gzip > $(CRAWL)-warc.paths.gz
 
 one-warcinfo:
 	python make-warcinfo-index.py $(CRAWL)
