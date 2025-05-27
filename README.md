@@ -9,7 +9,7 @@ The `make all-warcinfo` step runs one extractor per crawl. On the
 first run, the first crawl extraction finished in 1h 35m and the last
 in 6h 56m.
 
-A copy of the actual index can be found on rf:/home/cc-pds/warcinfo_id.parquet
+A copy of the actual index can be found on rf:/home/cc-pds/warcinfo-id.parquet
 
 ## How to query
 
@@ -31,7 +31,16 @@ make collinfo
 make all-crawls
 make all-warcinfo
 make parquet
+make test
+```
 
+To add a single new crawl, edit the Makefile to change the CRAWL
+variable, then
+
+```
+make one-paths
+make one-warcinfo
+make parquet
 make test
 ```
 
@@ -40,5 +49,5 @@ make test
 If happy, copy to place:
 
 ```
-cp -p warcinfo-id.parquet /home/cc-pds/
+make install
 ```
