@@ -2,6 +2,7 @@ import sys
 from io import BytesIO
 import gzip
 import os.path
+import time
 
 import boto3
 import botocore.exceptions
@@ -64,18 +65,21 @@ for crawl in sys.argv[1:]:
     output = []
 
     for warc in tqdm(warcs):
-        try:
-            response = s3.get_object(
-                Bucket=s3_bucket,
-                Key=warc,
-                Range='bytes=0-16383',
-            )
-        except botocore.exceptions.ClientError as error:
-            print('No such key', s3_bucket, warc, repr(error))
-            continue
-        except KeyboardInterrupt as error:
-            print('^C fetching', s3_bucket, warc, repr(error))
-            continue
+        for retries in range(50):
+            try:
+                response = s3.get_object(
+                    Bucket=s3_bucket,
+                    Key=warc,
+                    Range='bytes=0-16383',
+                )
+            except botocore.exceptions.ClientError as error:
+                print('No such key', s3_bucket, warc, repr(error))
+                time.sleep(30)
+                continue
+            except KeyboardInterrupt as error:
+                print('^C fetching', s3_bucket, warc, repr(error))
+                continue
+            break
 
         record_bytes = response['Body'].read()  # warcio will decompress for us
         stream = DecompressingBufferedReader(BytesIO(record_bytes))
