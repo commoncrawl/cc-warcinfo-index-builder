@@ -80,6 +80,8 @@ for crawl in sys.argv[1:]:
                 print('^C fetching', s3_bucket, warc, repr(error))
                 continue
             break
+        else:
+            raise Exception('ran out of retries on key '+warc)
 
         record_bytes = response['Body'].read()  # warcio will decompress for us
         stream = DecompressingBufferedReader(BytesIO(record_bytes))
