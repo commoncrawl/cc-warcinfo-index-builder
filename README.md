@@ -1,4 +1,4 @@
-# generate-warcinfo-index
+# cc-warcinfo-index-builder
 
 For each crawl, generate parquet which has the following fields:
 
@@ -10,6 +10,12 @@ first run, the first crawl extraction finished in 1h 35m and the last
 in 6h 56m.
 
 A copy of the actual index can be found on rf:/home/cc-pds/warcinfo-id.parquet
+
+## Why?
+
+When WARC records are repackaged into different WARC files, sometimes
+you need to figure out what WARC file the original record was in.
+This index answers that question.
 
 ## How to query
 
