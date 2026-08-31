@@ -5,9 +5,10 @@ For each crawl, generate parquet which has the following fields:
 - warcinfo_id
 - warc_filename
 
-The `make all-warcinfo` step runs one extractor per crawl. On the
-first run, the first crawl extraction finished in 1h 35m and the last
-in 6h 56m.
+The `make all-warcinfo` step runs one extractor per crawl.
+
+On the first run, which looked at all of the crawls in parallel, the
+first crawl extraction finished in 1h 35m and the last in 6h 56m.
 
 A copy of the actual index can be found on rf:/home/cc-pds/warcinfo-id.parquet
 
