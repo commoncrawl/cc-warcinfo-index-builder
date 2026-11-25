@@ -6,7 +6,7 @@ collinfo:
 all-crawls:
 	cat collinfo.json | jq -r '.[].id' > all-crawls
 
-CRAWL=CC-MAIN-2026-08
+CRAWL=CC-MAIN-2026-47
 one-paths:
 	aws s3 ls --recursive s3://commoncrawl/crawl-data/$(CRAWL)/ | grep /warc/ | awk '{print $$4}' | gzip > $(CRAWL)-warc.paths.gz
 

@@ -1,3 +1,6 @@
 *.parquet
 all-crawls
 collinfo.json
+CC*paths
+CC*paths.gz
+__pycache__

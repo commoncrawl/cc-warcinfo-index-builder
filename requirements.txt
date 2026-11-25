@@ -4,6 +4,7 @@ pandas
 numpy
 pyarrow
 duckdb
+tqdm
 
 pytest
 
